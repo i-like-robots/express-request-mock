@@ -1,5 +1,7 @@
 # Express Request Mock
 
+![Build status](https://api.travis-ci.org/i-like-robots/express-request-mocks.png) [![Coverage Status](https://coveralls.io/repos/github/i-like-robots/express-request-mocks/badge.svg?branch=master)](https://coveralls.io/github/i-like-robots/express-request-mocks)
+
 A convenient wrapper for [node-mocks-http][1] to make testing Express controllers easy.
 
 ## Installation
