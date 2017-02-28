@@ -1,0 +1,37 @@
+{
+  "name": "express-request-mock",
+  "version": "0.0.1",
+  "description": "A convenient wrapper for node-mocks-http to make testing Express controllers easy.",
+  "keywords": [
+    "mock",
+    "stub",
+    "test",
+    "express",
+    "controller"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test:lint && npm run test:spec",
+    "test:lint": "standard",
+    "test:spec": "tap test/spec.js",
+    "test:coverage": "npm run test:spec -- --coverage"
+  },
+  "author": "Matt Hinchliffe",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:i-like-robots/express-request-mock.git"
+  },
+  "homepage": "https://github.com/i-like-robots/express-request-mock",
+  "license": "MIT",
+  "dependencies": {
+    "node-mocks-http": "^1.6.1",
+    "sinon": "^1.17.7"
+  },
+  "devDependencies": {
+    "standard": "^8.6.0",
+    "tap": "^10.2.2"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  }
+}
