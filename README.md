@@ -18,26 +18,27 @@ First include the module in your tests:
 const expressRequestMock = require('express-request-mock')
 ```
 
-The module exposes one function that accepts two arguments:
+The module provides one function which accepts two arguments:
 
-1. Your controller method under test which accepts a request and response object and (optional) fallthrough function.
+1. The route handler function to test, which accepts a request and response object and (optional) fallthrough function.
 2. An optional hash of options for `createRequest` (the options for which are [documented here][2]).
 
 ```js
-const animals = require('../../controllers/animals')
+const handler = require('../../controllers/animals')
 const options = { params: { species: 'dog' } }
-const request = expressRequestMock(animals, options)
+const request = expressRequestMock(handler, options)
 ```
 
-The function will call the given controller method and return a promise. The promise will resolve with an obect containing the following keys:
+The provided handler will be called and a promise returned. The promise will _resolve_ either when the response is ended or the fallthrough function called. The promise will reject if either the underlying code throws an error or fallthrough function is called with an error.
+
+When the promise resolves it will provide an object with the following keys:
 
 1. `req`: The request object created by `createRequest`
 2. `res`: The response object created by `createResponse`
-3. `next`: A [Sinon][3] spy for the Express fallthrough function
 
 ```js
-request.then(({ req, res, next }) => {
-  // write assertions
+request.then(({ req, res }) => {
+  // write assertions!
 })
 ```
 
@@ -48,14 +49,14 @@ Below is an example using `express-request-mock` to test a controller along with
 ```js
 const { expect } = require('chai')
 const expressRequestMock = require('express-request-mock')
-const animals = require('../../controllers/animals')
+const handler = require('../../controllers/animals')
 
 describe('Controllers - Animals', () => {
   context('when a species is requested', () => {
     const options = { params: { species: 'dog' } }
 
     it('returns a 200 response', () => (
-      expressRequestMock(animals, options).then(({ res }) => {
+      expressRequestMock(handler, options).then(({ res }) => {
         expect(res.statusCode).to.equal(200)
       })
     ))
@@ -65,8 +66,18 @@ describe('Controllers - Animals', () => {
     const options = { params: { species: 'unicorn' } }
 
     it('returns a 404 response', () => (
-      expressRequestMock(animals, options).then(({ res }) => {
+      expressRequestMock(handler, options).then(({ res }) => {
         expect(res.statusCode).to.equal(404)
+      })
+    ))
+  })
+
+  context('when an error happens', () => {
+    const options = { params: {} }
+
+    it('falls through passing the error along response', () => (
+      expressRequestMock(handler, options).catch((err) => {
+        expect(err.name).to.equal('NoSpeciesProvided')
       })
     ))
   })

@@ -6,77 +6,94 @@ const fixture = require('./fixture')
 const noop = () => {}
 
 t.test('Express Request Mock', (t) => {
-  t.test('interface', (t) => {
-    // type assertion fails when given Function
-    // <https://github.com/tapjs/node-tap/issues/354>
-    t.type(subject, 'function', 'exports a function')
-    t.equal(subject.length, 2, 'that accepts two arguments')
-    t.type(subject(noop), Promise, 'and returns a promise')
+  t.test('the interface', (t) => {
+    t.test('when imported', (t) => {
+      // type assertion fails when given Function
+      // <https://github.com/tapjs/node-tap/issues/354>
+      t.type(subject, 'function', 'exports a function')
+      t.type(subject(noop), Promise, 'and returns a promise')
+      t.end()
+    })
+
+    t.test('when called with a method', (t) => {
+      const stub = sinon.stub()
+
+      subject(stub)
+
+      // it calls the method with the request, response and fallthrough function
+      sinon.assert.calledOnce(stub)
+      sinon.assert.calledWithMatch(stub, Object, Object, Function)
+
+      t.end()
+    })
+
+    t.test('when called without a method', (t) => {
+      t.throws(subject, TypeError, 'it throws a type error')
+      t.end()
+    })
+
     t.end()
   })
 
-  t.test('when given a method', (t) => {
-    const stub = sinon.stub()
+  t.test('when the promise is resolved', (t) => {
+    t.test('it resolves with', (t) => {
+      const options = { params: { case: 'ok-sync' } }
 
-    subject(stub)
+      return subject(fixture, options).then((props) => {
+        t.type(props.req, Object, 'the request object')
+        t.type(props.res, Object, 'the response object')
 
-    // it calls the method with the request, response and fallthrough function spy
-    sinon.assert.calledOnce(stub)
-    sinon.assert.calledWithMatch(stub, Object, Object, Function)
+        t.end()
+      })
+    })
+
+    t.test('by the end event being emitted (sync)', (t) => {
+      const options = { params: { case: 'ok-sync' } }
+
+      return subject(fixture, options).then((props) => {
+        t.equal(Object.keys(props).length, 2, 'it provides the request and response objects')
+        t.end()
+      })
+    })
+
+    t.test('by the end event being emitted (async)', (t) => {
+      const options = { params: { case: 'ok-async' } }
+
+      return subject(fixture, options).then((props) => {
+        t.equal(Object.keys(props).length, 2, 'it provides the request and response objects')
+        t.end()
+      })
+    })
+
+    t.test('by the fallthrough function being called', (t) => {
+      const options = { params: { case: 'ok-next' } }
+
+      return subject(fixture, options).then(() => {
+        t.pass('it does not provide any arguments')
+      })
+    })
 
     t.end()
   })
 
-  t.test('when not given a method', (t) => {
-    t.throws(subject, TypeError, 'it throws a type error')
+  t.test('when the promise is rejected', (t) => {
+    t.test('by the fallthrough function being called with an error', (t) => {
+      const options = { params: { case: 'fail-next' } }
+
+      return subject(fixture, options)
+        .then(() => t.fail())
+        .catch((err) => t.type(err, 'NextError', 'and passes the error along'))
+    })
+
+    t.test('by the code under test throwing an error', (t) => {
+      const options = { params: { case: 'fail-throws' } }
+
+      return subject(fixture, options)
+        .then(() => t.fail())
+        .catch((err) => t.type(err, 'ThrowsError', 'and passes the error along'))
+    })
+
     t.end()
-  })
-
-  t.test('resolves with request, response and fallthrough function spy', (t) => {
-    const options = { params: { case: 'sync' } }
-
-    return subject(fixture, options).then(({ req, res, next }) => {
-      t.type(req, Object, 'it returns the request')
-      t.type(res, Object, 'it returns the response')
-      t.type(next, 'function', 'it returns the fallthrough function spy')
-
-      t.end()
-    })
-  })
-
-  t.test('resolves the returned promise when the end event is emitted (sync)', (t) => {
-    const options = { params: { case: 'sync' } }
-
-    return subject(fixture, options).then(({ res }) => {
-      t.equal(res.statusCode, 200)
-      t.end()
-    })
-  })
-
-  t.test('resolves the returned promise when the end event is emitted (async)', (t) => {
-    const options = { params: { case: 'async' } }
-
-    return subject(fixture, options).then(({ res }) => {
-      t.equal(res.statusCode, 200)
-      t.end()
-    })
-  })
-
-  t.test('resolves the returned promise when the fallthrough function is called', (t) => {
-    const options = { params: { case: 'next' } }
-
-    return subject(fixture, options).then(({ res }) => {
-      t.equal(res.statusCode, 200)
-      t.end()
-    })
-  })
-
-  t.test('rejects the returned promise if the code under test throws', (t) => {
-    const options = { params: { case: 'throws' } }
-
-    return subject(fixture, options)
-      .then(() => t.fail())
-      .catch((err) => t.type(err, Error, 'and passes the error along'))
   })
 
   t.end()
