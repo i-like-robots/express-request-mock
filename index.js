@@ -1,28 +1,28 @@
-const sinon = require('sinon')
 const { createMocks } = require('node-mocks-http')
 const { EventEmitter: eventEmitter } = require('events')
 
-const createHttpRequest = (options = {}) => {
-  const props = createMocks(options, { eventEmitter })
-
-  // Emit end event if fallthrough function is called
-  const next = sinon.spy(() => props.res.emit('end'))
-
-  return Object.assign({}, props, { next })
-}
-
-const expressRequestMock = (action, options) => {
-  if (typeof action !== 'function') {
-    throw new TypeError('action must be a function')
+const expressRequestMock = (handler, options = {}) => {
+  if (typeof handler !== 'function') {
+    throw new TypeError('fn must be a function')
   }
 
-  const { req, res, next } = createHttpRequest(options)
+  const { req, res } = createMocks(options, { eventEmitter })
 
   return new Promise((resolve, reject) => {
-    res.on('end', () => resolve({ req, res, next }))
+    const next = (err) => {
+      if (err && err instanceof Error) {
+        reject(err)
+      } else {
+        resolve()
+      }
+    }
+
+    const done = () => resolve({ req, res })
+
+    res.on('end', done)
 
     try {
-      action(req, res, next)
+      handler(req, res, next)
     } catch (err) {
       reject(err)
     }

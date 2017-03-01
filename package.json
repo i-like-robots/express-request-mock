@@ -24,11 +24,11 @@
   "homepage": "https://github.com/i-like-robots/express-request-mock",
   "license": "MIT",
   "dependencies": {
-    "node-mocks-http": "^1.6.1",
-    "sinon": "^1.17.7"
+    "node-mocks-http": "^1.6.1"
   },
   "devDependencies": {
     "coveralls": "^2.11.16",
+    "sinon": "^1.17.7",
     "standard": "^8.6.0",
     "tap": "^10.2.2"
   },

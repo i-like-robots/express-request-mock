@@ -18,9 +18,9 @@ First include the module in your tests:
 const expressRequestMock = require('express-request-mock')
 ```
 
-The module exposes one function that accepts two arguments:
+The module exports one function which accepts two arguments:
 
-1. Your controller method under test which accepts a request and response object and (optional) fallthrough function.
+1. The route handler function to test which accepts a request and response object and (optional) fallthrough function.
 2. An optional hash of options for `createRequest` (the options for which are [documented here][2]).
 
 ```js
@@ -29,7 +29,7 @@ const options = { params: { species: 'dog' } }
 const request = expressRequestMock(animals, options)
 ```
 
-The function will call the given controller method and return a promise. The promise will resolve with an obect containing the following keys:
+The provided handler will be called and a promise returned. The promise will resolve either when the response is ended or the fallthrough function called. If the response is ended an object with the following keys will be returned:
 
 1. `req`: The request object created by `createRequest`
 2. `res`: The response object created by `createResponse`
