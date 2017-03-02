@@ -6,12 +6,12 @@ const fixture = require('./fixture')
 const noop = () => {}
 
 t.test('Express Request Mock', (t) => {
-  t.test('the interface', (t) => {
+  t.test('interface', (t) => {
     t.test('when imported', (t) => {
       // type assertion fails when given Function
       // <https://github.com/tapjs/node-tap/issues/354>
-      t.type(subject, 'function', 'exports a function')
-      t.type(subject(noop), Promise, 'and returns a promise')
+      t.type(subject, 'function', 'provides a function')
+      t.type(subject(noop), Promise, 'that returns a promise')
       t.end()
     })
 
@@ -20,9 +20,8 @@ t.test('Express Request Mock', (t) => {
 
       subject(stub)
 
-      // it calls the method with the request, response and fallthrough function
-      sinon.assert.calledOnce(stub)
-      sinon.assert.calledWithMatch(stub, Object, Object, Function)
+      t.ok(stub.calledOnce, 'it calls the method')
+      t.ok(stub.calledWithMatch(Object, Object, Function), 'with the request, response and fallthrough function')
 
       t.end()
     })
@@ -36,22 +35,12 @@ t.test('Express Request Mock', (t) => {
   })
 
   t.test('when the promise is resolved', (t) => {
-    t.test('it resolves with', (t) => {
-      const options = { params: { case: 'ok-sync' } }
-
-      return subject(fixture, options).then((props) => {
-        t.type(props.req, Object, 'the request object')
-        t.type(props.res, Object, 'the response object')
-
-        t.end()
-      })
-    })
-
     t.test('by the end event being emitted (sync)', (t) => {
       const options = { params: { case: 'ok-sync' } }
 
       return subject(fixture, options).then((props) => {
-        t.equal(Object.keys(props).length, 2, 'it provides the request and response objects')
+        t.type(props.req, Object, 'it provides the request object')
+        t.type(props.res, Object, 'and the response object')
         t.end()
       })
     })
@@ -60,7 +49,8 @@ t.test('Express Request Mock', (t) => {
       const options = { params: { case: 'ok-async' } }
 
       return subject(fixture, options).then((props) => {
-        t.equal(Object.keys(props).length, 2, 'it provides the request and response objects')
+        t.type(props.req, Object, 'it provides the request object')
+        t.type(props.res, Object, 'and the response object')
         t.end()
       })
     })
@@ -68,8 +58,8 @@ t.test('Express Request Mock', (t) => {
     t.test('by the fallthrough function being called', (t) => {
       const options = { params: { case: 'ok-next' } }
 
-      return subject(fixture, options).then(() => {
-        t.pass('it does not provide any arguments')
+      return subject(fixture, options).then((props) => {
+        t.equal(props, undefined, 'it does not provide any arguments')
       })
     })
 
@@ -82,7 +72,7 @@ t.test('Express Request Mock', (t) => {
 
       return subject(fixture, options)
         .then(() => t.fail())
-        .catch((err) => t.type(err, 'NextError', 'and passes the error along'))
+        .catch((err) => t.type(err, 'NextError', 'it passes the error along'))
     })
 
     t.test('by the code under test throwing an error', (t) => {
@@ -90,7 +80,7 @@ t.test('Express Request Mock', (t) => {
 
       return subject(fixture, options)
         .then(() => t.fail())
-        .catch((err) => t.type(err, 'ThrowsError', 'and passes the error along'))
+        .catch((err) => t.type(err, 'ThrowsError', 'it passes the error along'))
     })
 
     t.end()
