@@ -31,7 +31,7 @@ const request = expressRequestMock(handler, options)
 
 The provided handler will be called and a promise returned. The promise will _resolve_ either when the response is ended or the fallthrough function called. The promise will reject if either the underlying code throws an error or fallthrough function is called with an error.
 
-When the promise resolves it will provide an object with the following keys:
+When the promise is resolved by the response ending it will provide an object with the following keys:
 
 1. `req`: The request object created by `createRequest`
 2. `res`: The response object created by `createResponse`
@@ -75,7 +75,7 @@ describe('Controllers - Animals', () => {
   context('when an error happens', () => {
     const options = { params: {} }
 
-    it('falls through passing the error along response', () => (
+    it('falls through and passes the error along', () => (
       expressRequestMock(handler, options).catch((err) => {
         expect(err.name).to.equal('NoSpeciesProvided')
       })
