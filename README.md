@@ -56,7 +56,7 @@ describe('Controllers - Animals', () => {
     const options = { params: { species: 'dog' } }
 
     it('returns a 200 response', () => (
-      expressRequestMock(handler, options).then(({ res }) => {
+      return expressRequestMock(handler, options).then(({ res }) => {
         expect(res.statusCode).to.equal(200)
       })
     ))
@@ -66,7 +66,7 @@ describe('Controllers - Animals', () => {
     const options = { params: { species: 'unicorn' } }
 
     it('returns a 404 response', () => (
-      expressRequestMock(handler, options).then(({ res }) => {
+      return expressRequestMock(handler, options).then(({ res }) => {
         expect(res.statusCode).to.equal(404)
       })
     ))
@@ -76,7 +76,7 @@ describe('Controllers - Animals', () => {
     const options = { params: {} }
 
     it('falls through and passes the error along', () => (
-      expressRequestMock(handler, options).catch((err) => {
+      return expressRequestMock(handler, options).catch((err) => {
         expect(err.name).to.equal('NoSpeciesProvided')
       })
     ))
