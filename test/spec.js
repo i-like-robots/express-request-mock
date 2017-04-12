@@ -79,16 +79,16 @@ t.test('Express Request Mock', (t) => {
       const options = { params: { case: 'fail-next' } }
 
       return subject(fixture, options)
-        .then(() => t.fail())
-        .catch((err) => t.type(err, 'NextError', 'it passes the error along'))
+        .then(() => t.fail('the promise should not resolve'))
+        .catch((err) => t.equal(err.message, 'next', 'it passes the error along'))
     })
 
     t.test('by the code under test throwing an error', (t) => {
       const options = { params: { case: 'fail-throws' } }
 
       return subject(fixture, options)
-        .then(() => t.fail())
-        .catch((err) => t.type(err, 'ThrowsError', 'it passes the error along'))
+        .then(() => t.fail('the promise should not resolve'))
+        .catch((err) => t.equal(err.message, 'throws', 'it passes the error along'))
     })
 
     t.end()
