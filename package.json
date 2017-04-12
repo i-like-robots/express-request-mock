@@ -1,6 +1,6 @@
 {
   "name": "express-request-mock",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "description": "A convenient wrapper for node-mocks-http to make testing Express controllers easy.",
   "keywords": [
     "mock",
