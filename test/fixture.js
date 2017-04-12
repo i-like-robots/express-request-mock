@@ -1,12 +1,12 @@
 class NextError extends Error {
-  constructor(message) {
+  constructor (message) {
     super(message)
     this.name = 'NextError'
   }
 }
 
 class ThrowsError extends Error {
-  constructor(message) {
+  constructor (message) {
     super(message)
     this.name = 'ThrowsError'
   }
@@ -24,6 +24,10 @@ module.exports = function (req, res, next) {
 
     case 'ok-next':
       next()
+      break
+
+    case 'ok-bypass':
+      next('route')
       break
 
     case 'fail-next':
