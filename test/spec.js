@@ -63,6 +63,14 @@ t.test('Express Request Mock', (t) => {
       })
     })
 
+    t.test('by the fallthrough function being called with a bypass command', (t) => {
+      const options = { params: { case: 'ok-bypass' } }
+
+      return subject(fixture, options).then(() => {
+        t.pass('it does not provide any arguments')
+      })
+    })
+
     t.end()
   })
 

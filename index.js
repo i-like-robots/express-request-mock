@@ -10,7 +10,12 @@ const expressRequestMock = (handler, options = {}) => {
 
   return new Promise((resolve, reject) => {
     const next = (err) => {
-      if (err && err instanceof Error) {
+      // Calling the fallthrough function with a string may be valid:-
+      // 1. Calling with 'route' will skip any remaining route callbacks
+      // 2. Calling with 'router' will exit the router and 404
+      const isBypass = typeof err === 'string' && /^router?$/.test(err)
+
+      if (err && !isBypass) {
         reject(err)
       } else {
         resolve()
