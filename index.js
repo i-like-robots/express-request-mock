@@ -1,9 +1,9 @@
 const { createMocks } = require('node-mocks-http')
 const { EventEmitter: eventEmitter } = require('events')
 
-const expressRequestMock = (handler, options = {}) => {
-  if (typeof handler !== 'function') {
-    throw new TypeError('fn must be a function')
+const expressRequestMock = (callback, options = {}) => {
+  if (typeof callback !== 'function') {
+    throw new TypeError('callback must be a function')
   }
 
   const { req, res } = createMocks(options, { eventEmitter })
@@ -27,7 +27,7 @@ const expressRequestMock = (handler, options = {}) => {
     res.on('end', done)
 
     try {
-      handler(req, res, next)
+      callback(req, res, next)
     } catch (err) {
       reject(err)
     }
