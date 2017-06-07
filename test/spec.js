@@ -50,7 +50,25 @@ t.test('Express Request Mock', (t) => {
           sinon.match.object,
           sinon.match.func
         ),
-        'the request is decorated with the options'
+        'the mocks are created with the options'
+      )
+
+      t.end()
+    })
+
+    t.test('when given decorators', (t) => {
+      const stub = sinon.stub()
+      const locals = { authorized: true }
+
+      subject(stub, undefined, { locals })
+
+      t.ok(
+        stub.calledWithMatch(
+          sinon.match.has('locals', locals),
+          sinon.match.has('locals', locals),
+          sinon.match.func
+        ),
+        'the mocks are assigned the decorators'
       )
 
       t.end()
