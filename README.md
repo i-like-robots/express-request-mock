@@ -18,15 +18,17 @@ First include the module in your test:
 const requestMock = require('express-request-mock')
 ```
 
-The module provides one function which accepts two arguments:
+The module provides one function which accepts three arguments:
 
 1. The callback to test (a function which accepts a request, response, and optional fallthrough function).
 2. An optional hash of options for `createRequest` (the options for which are [documented here][2]).
+3. An optional hash of decorators to append to the request and response objects (useful when mocking middleware).
 
 ```js
 const subject = require('../../controllers/animals')
 const options = { params: { species: 'dog' } }
-const request = requestMock(subject, options)
+const decorators = { locals: { authorized: true } }
+const request = requestMock(subject, options, decorators)
 ```
 
 The callback will be invoked and a promise returned. The promise will _resolve_ either when the response is ended or the fallthrough function called. The promise will _reject_ if either the underlying code throws an error or the fallthrough function is called with an error.

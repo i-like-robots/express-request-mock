@@ -1,12 +1,16 @@
 const { createMocks } = require('node-mocks-http')
 const { EventEmitter: eventEmitter } = require('events')
 
-const expressRequestMock = (callback, options = {}) => {
+const expressRequestMock = (callback, options = {}, decorators = {}) => {
   if (typeof callback !== 'function') {
     throw new TypeError('callback must be a function')
   }
 
   const { req, res } = createMocks(options, { eventEmitter })
+
+  // append extra properties to request and response, à la middleware
+  Object.assign(req, decorators)
+  Object.assign(res, decorators)
 
   return new Promise((resolve, reject) => {
     const next = (err) => {
