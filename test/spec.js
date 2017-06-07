@@ -21,13 +21,38 @@ t.test('Express Request Mock', (t) => {
       subject(stub)
 
       t.ok(stub.calledOnce, 'it calls the method')
-      t.ok(stub.calledWithMatch(Object, Object, Function), 'with the request, response and fallthrough function')
+      t.ok(
+        stub.calledWithMatch(
+          sinon.match.object,
+          sinon.match.object,
+          sinon.match.func
+        ),
+        'with the request, response and fallthrough function'
+      )
 
       t.end()
     })
 
     t.test('when called without a method', (t) => {
       t.throws(subject, TypeError, 'it throws a type error')
+      t.end()
+    })
+
+    t.test('when given options', (t) => {
+      const stub = sinon.stub()
+      const query = { search: true }
+
+      subject(stub, { query })
+
+      t.ok(
+        stub.calledWithMatch(
+          sinon.match.has('query', query),
+          sinon.match.object,
+          sinon.match.func
+        ),
+        'the request is decorated with the options'
+      )
+
       t.end()
     })
 
