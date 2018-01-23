@@ -30,11 +30,7 @@ const expressRequestMock = (callback, options = {}, decorators = {}) => {
 
     res.on('end', done)
 
-    try {
-      callback(req, res, next)
-    } catch (err) {
-      reject(err)
-    }
+    callback(req, res, next)
   })
 }
 
