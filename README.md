@@ -8,7 +8,7 @@ A convenient wrapper for [node-mocks-http][1] to make testing Express controller
 ## Installation
 
 ```sh
-$ npm install express-request-mock --save-dev
+$ npm install -D express-request-mock
 ```
 
 ## Usage
@@ -19,22 +19,22 @@ First include the module in your test:
 const requestMock = require('express-request-mock')
 ```
 
-The module provides one function which accepts three arguments:
+The module provides one function which accepts up to three arguments:
 
-1. The callback to test (a function which accepts a request, response, and optional fallthrough function).
-2. An optional hash of options for `createRequest` (the options for which are [documented here][2]).
-3. An optional hash of decorators to append to the request and response objects (useful when mocking middleware).
+1. The callback to test (a function which accepts a request, response, and optional fallthrough function.)
+2. An optional hash of options for `createRequest` (the options for which are [documented here][2].)
+3. An optional hash of decorators to append to the request and response objects (useful when mocking middleware.)
 
 ```js
 const subject = require('../../controllers/animals')
-const options = { params: { species: 'dog' } }
-const decorators = { locals: { authorized: true } }
+const options = { query: { species: 'dog' } }
+const decorators = { authorized: true }
 const request = requestMock(subject, options, decorators)
 ```
 
-The `requestMock` function returns a promise which will _resolve_ either when the response is ended or the fallthrough function called. The promise will _reject_ if either the underlying code throws an error or the fallthrough function is called with an error.
+The `requestMock` function returns a promise which will _resolve_ either when the response is ended or the fallthrough function called. The promise will _reject_ if either the underlying code throws an error or the fallthrough (`next()`) function is called with an error.
 
-When the promise is resolved it will provide an object with the following keys:
+The promise will resolve to an object with the following keys:
 
 1. `req`: The request object created by `createRequest`
 2. `res`: The response object created by `createResponse`
@@ -47,7 +47,7 @@ request.then(({ req, res }) => {
 
 ## Example
 
-Below is an example using `express-request-mock` to test a controller along with [Mocha][4] and [Chai][5]:
+Below is an example using `express-request-mock` to test a controller along with [Mocha][4] and [Chai][5] (but it also works well with Jest, Tap, and Jasmine!):
 
 ```js
 const { expect } = require('chai')
@@ -56,7 +56,7 @@ const subject = require('../../controllers/animals')
 
 describe('Controllers - Animals', () => {
   context('when a valid species is requested', () => {
-    const options = { params: { species: 'dog' } }
+    const options = { query: { species: 'dog' } }
 
     it('returns a 200 response', () => {
       return requestMock(subject, options).then(({ res }) => {
@@ -66,7 +66,7 @@ describe('Controllers - Animals', () => {
   })
 
   context('when a non-existant species is requested', () => {
-    const options = { params: { species: 'unicorn' } }
+    const options = { query: { species: 'unicorn' } }
 
     it('returns a 404 response', () => {
       return requestMock(subject, options).then(({ res }) => {
@@ -76,9 +76,9 @@ describe('Controllers - Animals', () => {
   })
 
   context('when an error happens', () => {
-    const options = { params: {} }
+    const options = { query: {} }
 
-    it('calls the fallthrough function and passes the error along', () => {
+    it('calls the fallthrough function with the error', () => {
       return requestMock(subject, options).catch((err) => {
         expect(err.name).to.equal('NoSpeciesProvided')
       })
