@@ -34,7 +34,7 @@ const request = requestMock(subject, options, decorators)
 
 The `requestMock` function returns a promise which will _resolve_ either when the response is ended or the fallthrough function called. The promise will _reject_ if either the underlying code throws an error or the fallthrough function is called with an error.
 
-When the promise is resolved by the response ending it will provide an object with the following keys:
+When the promise is resolved it will provide an object with the following keys:
 
 1. `req`: The request object created by `createRequest`
 2. `res`: The response object created by `createResponse`
