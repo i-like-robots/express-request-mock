@@ -13,6 +13,8 @@ const expressRequestMock = (callback, options = {}, decorators = {}) => {
   Object.assign(res, decorators)
 
   return new Promise((resolve, reject) => {
+    const done = () => resolve({ req, res })
+
     const next = (err) => {
       // Calling the fallthrough function with a string may be valid:-
       // 1. Calling with 'route' will skip any remaining route callbacks
@@ -22,11 +24,9 @@ const expressRequestMock = (callback, options = {}, decorators = {}) => {
       if (err && !isBypass) {
         reject(err)
       } else {
-        resolve()
+        done()
       }
     }
-
-    const done = () => resolve({ req, res })
 
     res.on('end', done)
 

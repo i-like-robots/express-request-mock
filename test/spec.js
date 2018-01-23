@@ -100,15 +100,17 @@ t.test('Express Request Mock', (t) => {
       const options = { params: { case: 'ok-next' } }
 
       return subject(fixture, options).then((props) => {
-        t.equal(props, undefined, 'it does not provide any arguments')
+        t.type(props.req, Object, 'it provides the request object')
+        t.type(props.res, Object, 'and the response object')
       })
     })
 
     t.test('by the fallthrough function being called with a bypass command', (t) => {
       const options = { params: { case: 'ok-bypass' } }
 
-      return subject(fixture, options).then(() => {
-        t.pass('it does not provide any arguments')
+      return subject(fixture, options).then((props) => {
+        t.type(props.req, Object, 'it provides the request object')
+        t.type(props.res, Object, 'and the response object')
       })
     })
 
