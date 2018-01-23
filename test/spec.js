@@ -84,7 +84,6 @@ t.test('Express Request Mock', (t) => {
       return subject(fixture, options).then((props) => {
         t.type(props.req, Object, 'it provides the request object')
         t.type(props.res, Object, 'and the response object')
-        t.end()
       })
     })
 
@@ -94,7 +93,6 @@ t.test('Express Request Mock', (t) => {
       return subject(fixture, options).then((props) => {
         t.type(props.req, Object, 'it provides the request object')
         t.type(props.res, Object, 'and the response object')
-        t.end()
       })
     })
 
