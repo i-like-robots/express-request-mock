@@ -5,6 +5,25 @@
 
 A convenient wrapper for [node-mocks-http][1] to make testing Express controllers and middleware easy.
 
+```js
+const requestMock = require('express-request-mock')
+const subject = require('../../controllers/animals')
+
+describe('Controllers - Animals', () => {
+  context('when a valid species is requested', () => {
+    const options = { query: { species: 'dog' } }
+
+    it('returns a 200 response', () => {
+      return requestMock(subject, options).then(({ res }) => {
+        expect(res.statusCode).to.equal(200)
+      })
+    })
+  })
+})
+```
+
+[1]: https://github.com/howardabrams/node-mocks-http
+
 ## Installation
 
 This is a [Node.js][node] module available through the [npm][npm] registry. Before installing, download and install Node.js. Node.js 6 or higher is required.
@@ -33,6 +52,8 @@ The module provides one function which accepts up to three arguments:
 2. An optional hash of options for `createRequest` (the options for which are [documented here][2].)
 3. An optional hash of decorators to append to the request and response objects (useful when mocking middleware.)
 
+[2]: https://github.com/howardabrams/node-mocks-http#createrequest
+
 ```js
 const subject = require('../../controllers/animals')
 const options = { query: { species: 'dog' } }
@@ -55,7 +76,11 @@ request.then(({ req, res }) => {
 
 ## Example
 
-Below is an example using `express-request-mock` to test a controller along with [Mocha][4] and [Chai][5] (but it also works well with Jest, Tap, and Jasmine!):
+Below is an example using `express-request-mock` to test a controller along with [Mocha] and [Chai] (but it also works just as well with Jest, Tap, or Jasmine!):
+
+[Mocha]: https://mochajs.org/
+[Chai]: http://chaijs.com/
+
 
 ```js
 const { expect } = require('chai')
@@ -87,8 +112,8 @@ describe('Controllers - Animals', () => {
     const options = { query: {} }
 
     it('calls the fallthrough function with the error', () => {
-      return requestMock(subject, options).catch((err) => {
-        expect(err.name).to.equal('NoSpeciesProvided')
+      return requestMock(subject, options).catch((error) => {
+        expect(error.name).to.equal('NoSpeciesProvided')
       })
     })
   })
@@ -98,9 +123,3 @@ describe('Controllers - Animals', () => {
 ## License
 
 express-request-mock is MIT licensed.
-
-[1]: https://github.com/howardabrams/node-mocks-http
-[2]: https://github.com/howardabrams/node-mocks-http#createrequest
-[3]: http://sinonjs.org/
-[4]: https://mochajs.org/
-[5]: http://chaijs.com/
