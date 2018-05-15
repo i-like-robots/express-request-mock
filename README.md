@@ -1,15 +1,23 @@
 # Express Request Mock
 
-[![Build Status](https://travis-ci.org/i-like-robots/express-request-mock.svg?branch=master)](https://travis-ci.org/i-like-robots/express-request-mock) [![Coverage Status](https://coveralls.io/repos/github/i-like-robots/express-request-mock/badge.svg?branch=master)](https://coveralls.io/github/i-like-robots/express-request-mock) [![npm version](https://badge.fury.io/js/express-request-mock.svg)](https://badge.fury.io/js/express-request-mock)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/i-like-robots/express-request-mock/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/i-like-robots/express-request-mock.svg?branch=master)](https://travis-ci.org/i-like-robots/express-request-mock) [![Coverage Status](https://coveralls.io/repos/github/i-like-robots/express-request-mock/badge.svg?branch=master)](https://coveralls.io/github/i-like-robots/express-request-mock) [![npm version](https://img.shields.io/npm/v/express-request-mock.svg?style=flat)](https://www.npmjs.com/package/express-request-mock)
 
 A convenient wrapper for [node-mocks-http][1] to make testing Express controllers and middleware easy.
 
-
 ## Installation
+
+This is a [Node.js][node] module available through the [npm][npm] registry. Before installing, download and install Node.js. Node.js 6 or higher is required.
+
+Installation is done using the [npm install][install] command:
 
 ```sh
 $ npm install -D express-request-mock
 ```
+
+[node]: https://nodejs.org/en/
+[npm]: https://www.npmjs.com/
+[install]: https://docs.npmjs.com/getting-started/installing-npm-packages-locally
 
 ## Usage
 
@@ -86,6 +94,10 @@ describe('Controllers - Animals', () => {
   })
 })
 ```
+
+## License
+
+express-request-mock is MIT licensed.
 
 [1]: https://github.com/howardabrams/node-mocks-http
 [2]: https://github.com/howardabrams/node-mocks-http#createrequest
