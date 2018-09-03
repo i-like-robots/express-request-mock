@@ -5,4 +5,4 @@ node_js:
 after_success:
   - cat coverage/lcov.info | coveralls
 script:
-  - npm run test:coverage -- --coverage-report=text-lcov
+  - npm run coverage -- --coverage-report=text-lcov
