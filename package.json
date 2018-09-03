@@ -11,10 +11,10 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:lint && npm run test:spec",
-    "test:lint": "standard",
-    "test:spec": "tap test/spec.js",
-    "test:coverage": "npm run test:spec -- --coverage"
+    "test": "npm run lint && npm run spec",
+    "lint": "standard",
+    "spec": "tap test/spec.js",
+    "coverage": "npm run spec -- --coverage"
   },
   "author": "Matt Hinchliffe",
   "repository": {
@@ -30,7 +30,7 @@
     "coveralls": "^3.0.0",
     "sinon": "^5.0.0",
     "standard": "^11.0.0",
-    "tap": "^11.1.5"
+    "tap": "^12.0.0"
   },
   "engines": {
     "node": ">=6.0.0"
