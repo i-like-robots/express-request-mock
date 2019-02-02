@@ -8,9 +8,7 @@ const noop = () => {}
 t.test('Express Request Mock', (t) => {
   t.test('interface', (t) => {
     t.test('when imported', (t) => {
-      // type assertion fails when given Function
-      // <https://github.com/tapjs/node-tap/issues/354>
-      t.type(subject, 'function', 'provides a function')
+      t.type(subject, Function, 'provides a function')
       t.type(subject(noop), Promise, 'that returns a promise')
       t.end()
     })
