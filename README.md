@@ -6,17 +6,16 @@
 A convenient wrapper for [node-mocks-http][1] to make testing Express controllers and middleware easy (including asynchronous ones!)
 
 ```js
-const requestMock = require('express-request-mock')
+const expressRequestMock = require('express-request-mock')
 const subject = require('../../controllers/animals')
 
 describe('Controllers - Animals', () => {
   context('when a valid species is requested', () => {
     const options = { query: { species: 'dog' } }
 
-    it('returns a 200 response', () => {
-      return requestMock(subject, options).then(({ res }) => {
-        expect(res.statusCode).to.equal(200)
-      })
+    it('returns a 200 response', async () => {
+      const { res } = await expressRequestMock(subject, options)
+      expect(res.statusCode).to.equal(200)
     })
   })
 })
@@ -43,14 +42,14 @@ $ npm install -D express-request-mock
 First include the module in your test:
 
 ```js
-const requestMock = require('express-request-mock')
+const expressRequestMock = require('express-request-mock')
 ```
 
 The module provides one function which accepts up to three arguments:
 
-1. The callback to test (a function which accepts a request, response, and optional fallthrough function.)
-2. An optional hash of options for `createRequest` (the options for which are [documented here][2].)
-3. An optional hash of decorators to append to the request and response objects (useful when mocking middleware.)
+1. The route handler to test (a function which accepts a request, response, and optional fallthrough function.)
+2. An optional options object for `createRequest` (the options for which are [documented here][2].)
+3. An optional object with properties to append to the request and response objects (which can be useful when mocking middleware.)
 
 [2]: https://github.com/howardabrams/node-mocks-http#createrequest
 
@@ -58,10 +57,10 @@ The module provides one function which accepts up to three arguments:
 const subject = require('../../controllers/animals')
 const options = { query: { species: 'dog' } }
 const decorators = { authorized: true }
-const request = requestMock(subject, options, decorators)
+const request = expressRequestMock(subject, options, decorators)
 ```
 
-The `requestMock` function returns a promise which will _resolve_ either when the response is ended or the fallthrough function called. The promise will _reject_ if either the underlying code throws an error or the fallthrough (`next()`) function is called with an error.
+The function returns a promise which will _resolve_ either when the response is ended or the fallthrough function (`next()`) is called. The promise will _reject_ if either the underlying code throws an error or the fallthrough function is called with an error.
 
 The promise will resolve to an object with the following keys:
 
@@ -84,37 +83,37 @@ Below is an example using `express-request-mock` to test a controller along with
 
 ```js
 const { expect } = require('chai')
-const requestMock = require('express-request-mock')
+const expressRequestMock = require('express-request-mock')
 const subject = require('../../controllers/animals')
 
 describe('Controllers - Animals', () => {
   context('when a valid species is requested', () => {
     const options = { query: { species: 'dog' } }
 
-    it('returns a 200 response', () => {
-      return requestMock(subject, options).then(({ res }) => {
-        expect(res.statusCode).to.equal(200)
-      })
+    it('returns a 200 response', async () => {
+      const { res } = await expressRequestMock(subject, options)
+      expect(res.statusCode).to.equal(200)
     })
   })
 
   context('when a non-existant species is requested', () => {
     const options = { query: { species: 'unicorn' } }
 
-    it('returns a 404 response', () => {
-      return requestMock(subject, options).then(({ res }) => {
-        expect(res.statusCode).to.equal(404)
-      })
+    it('returns a 404 response', async () => {
+      const { res } =  await expressRequestMock(subject, options)
+      expect(res.statusCode).to.equal(404)
     })
   })
 
   context('when an error happens', () => {
     const options = { query: {} }
 
-    it('calls the fallthrough function with the error', () => {
-      return requestMock(subject, options).catch((error) => {
+    it('calls the fallthrough function with the error', async () => {
+      try {
+        await expressRequestMock(subject, options)
+      } catch (error) {
         expect(error.name).to.equal('NoSpeciesProvided')
-      })
+      }
     })
   })
 })
