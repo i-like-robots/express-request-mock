@@ -13,7 +13,7 @@ const expressRequestMock = (callback, options = {}, decorators = {}) => {
   Object.assign(res, decorators)
 
   return new Promise((resolve, reject) => {
-    const done = () => resolve({ req, res })
+    const done = () => resolve({ req, res, request: req, response: res })
 
     const next = (err) => {
       // Calling the fallthrough function with a string may be valid:-
