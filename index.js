@@ -1,19 +1,19 @@
 const { createMocks } = require('node-mocks-http')
-const { EventEmitter: eventEmitter } = require('events')
+const { EventEmitter } = require('events')
 
 const expressRequestMock = (callback, options = {}, decorators = {}) => {
   if (typeof callback !== 'function') {
     throw new TypeError('callback must be a function')
   }
 
-  const { req, res } = createMocks(options, { eventEmitter })
+  const { req, res } = createMocks(options, { eventEmitter: EventEmitter })
 
   // append extra properties to request and response, à la middleware
   Object.assign(req, decorators)
   Object.assign(res, decorators)
 
   return new Promise((resolve, reject) => {
-    const done = () => resolve({ req, res })
+    const done = () => resolve({ req, res, request: req, response: res })
 
     const next = (err) => {
       // Calling the fallthrough function with a string may be valid:-
