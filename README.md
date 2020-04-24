@@ -3,21 +3,15 @@
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/i-like-robots/express-request-mock/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/i-like-robots/express-request-mock.svg?branch=master)](https://travis-ci.org/i-like-robots/express-request-mock) [![Coverage Status](https://coveralls.io/repos/github/i-like-robots/express-request-mock/badge.svg?branch=master)](https://coveralls.io/github/i-like-robots/express-request-mock) [![npm version](https://img.shields.io/npm/v/express-request-mock.svg?style=flat)](https://www.npmjs.com/package/express-request-mock) [![Greenkeeper badge](https://badges.greenkeeper.io/i-like-robots/express-request-mock.svg)](https://greenkeeper.io/)
 
-A convenient wrapper for [node-mocks-http][1] to make testing Express controllers and middleware easy (including asynchronous ones!)
+A convenient wrapper for [node-mocks-http][1] which makes testing Express controllers and middleware easy.
 
 ```js
 const expressRequestMock = require('express-request-mock')
 const subject = require('../../controllers/animals')
 
-describe('Controllers - Animals', () => {
-  context('when a valid species is requested', () => {
-    const options = { query: { species: 'dog' } }
-
-    it('returns a 200 response', async () => {
-      const { res } = await expressRequestMock(subject, options)
-      expect(res.statusCode).to.equal(200)
-    })
-  })
+it('returns a 200 response', async () => {
+  const { res } = await expressRequestMock(subject, options)
+  expect(res.statusCode).to.equal(200)
 })
 ```
 
