@@ -11,8 +11,8 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint && npm run spec",
-    "lint": "standard",
+    "test": "npm run format && npm run spec",
+    "format": "prettier --config .prettierrc.json --list-different **/*.js",
     "spec": "tap test/spec.js",
     "coverage": "npm run spec -- --coverage"
   },
@@ -28,8 +28,8 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
+    "prettier": "^2.2.1",
     "sinon": "^9.0.0",
-    "standard": "^14.0.0",
     "tap": "^14.0.0"
   },
   "engines": {

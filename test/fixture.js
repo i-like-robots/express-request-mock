@@ -22,7 +22,6 @@ module.exports = function (req, res, next) {
 
     case 'fail-throws':
       // IIFE because the linter will complain otherwise =/
-      (() => { throw new Error('throws') })()
-      break
+      throw new Error('throws')
   }
 }

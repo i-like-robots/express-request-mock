@@ -20,11 +20,7 @@ t.test('Express Request Mock', (t) => {
 
       t.ok(stub.calledOnce, 'it calls the method')
       t.ok(
-        stub.calledWithMatch(
-          sinon.match.object,
-          sinon.match.object,
-          sinon.match.func
-        ),
+        stub.calledWithMatch(sinon.match.object, sinon.match.object, sinon.match.func),
         'with the request, response and fallthrough function'
       )
 
@@ -43,11 +39,7 @@ t.test('Express Request Mock', (t) => {
       subject(stub, { query })
 
       t.ok(
-        stub.calledWithMatch(
-          sinon.match.has('query', query),
-          sinon.match.object,
-          sinon.match.func
-        ),
+        stub.calledWithMatch(sinon.match.has('query', query), sinon.match.object, sinon.match.func),
         'the mocks are created with the options'
       )
 
