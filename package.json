@@ -1,6 +1,6 @@
 {
   "name": "express-request-mock",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Makes testing Express route callbacks and controllers easy.",
   "keywords": [
     "mock",
@@ -24,7 +24,7 @@
   "homepage": "https://github.com/i-like-robots/express-request-mock",
   "license": "MIT",
   "dependencies": {
-    "node-mocks-http": "^1.7.0"
+    "node-mocks-http": "^1.9.0"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
@@ -33,6 +33,6 @@
     "tap": "^14.0.0"
   },
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 12.0.0"
   }
 }

@@ -1,7 +1,7 @@
 # Express Request Mock
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/i-like-robots/express-request-mock/blob/main/LICENSE)
-[![Build Status](https://travis-ci.org/i-like-robots/express-request-mock.svg?branch=main)](https://travis-ci.org/i-like-robots/express-request-mock) [![Coverage Status](https://coveralls.io/repos/github/i-like-robots/express-request-mock/badge.svg?branch=main)](https://coveralls.io/github/i-like-robots/express-request-mock) [![npm version](https://img.shields.io/npm/v/express-request-mock.svg?style=flat)](https://www.npmjs.com/package/express-request-mock) [![Greenkeeper badge](https://badges.greenkeeper.io/i-like-robots/express-request-mock.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/i-like-robots/express-request-mock.svg?branch=main)](https://travis-ci.org/i-like-robots/express-request-mock) [![Coverage Status](https://coveralls.io/repos/github/i-like-robots/express-request-mock/badge.svg?branch=main)](https://coveralls.io/github/i-like-robots/express-request-mock) [![npm version](https://img.shields.io/npm/v/express-request-mock.svg?style=flat)](https://www.npmjs.com/package/express-request-mock)
 
 A convenient wrapper for [node-mocks-http][1] which makes testing Express controllers and middleware easy.
 
@@ -19,7 +19,7 @@ it('returns a 200 response', async () => {
 
 ## Installation
 
-This is a [Node.js][node] module available through the [npm][npm] registry. Before installing, download and install Node.js. Node.js 8 or higher is required.
+This is a [Node.js][node] module available through the [npm][npm] registry. Before installing, download and install Node.js. Node.js 12 or higher is required.
 
 Installation is done using the [npm install][install] command:
 
