@@ -1,6 +1,6 @@
 {
   "name": "express-request-mock",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Makes testing Express route callbacks and controllers easy.",
   "keywords": [
     "mock",
