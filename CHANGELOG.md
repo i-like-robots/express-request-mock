@@ -1,5 +1,8 @@
 # Changelog
 
+## v3.1.0
+
+- Adds TypeScript type definitions
 ## v3.0.0
 
 - Updates minimum Node version to v12.0.0
