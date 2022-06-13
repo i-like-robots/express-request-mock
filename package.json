@@ -12,10 +12,12 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "test": "npm run format && npm run spec",
-    "format": "prettier --config .prettierrc.json --list-different **/*.js",
+    "test": "npm run verify && npm run spec",
     "spec": "tap test/spec.js",
-    "coverage": "npm run spec -- --coverage"
+    "lint": "eslint .",
+    "format": "prettier --write '**/*.{ts,tsx,js,jsx,json,yml}'",
+    "verify": "npm run lint && npm run format",
+    "prepublishOnly": "npm run test"
   },
   "author": "Matt Hinchliffe",
   "repository": {
@@ -29,7 +31,8 @@
   },
   "devDependencies": {
     "coveralls": "^3.1.0",
-    "prettier": "^2.2.1",
+    "eslint": "^8.17.0",
+    "prettier": "^2.6.0",
     "sinon": "^10.0.0",
     "tap": "^15.0.0"
   },

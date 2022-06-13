@@ -1,5 +1,5 @@
-coverage/
-node_modules/
 .nyc_output/
-npm-debug.log
+node_modules/
 .DS_Store
+Thumbs.db
+npm-debug.log
