@@ -2,8 +2,16 @@ const { createMocks } = require('node-mocks-http')
 const { EventEmitter } = require('events')
 
 const expressRequestMock = (callback, options = {}, decorators = {}) => {
-  if (typeof callback !== 'function') {
-    throw new TypeError('callback must be a function')
+  if (typeof callback !== 'function' && !Array.isArray(callback)) {
+    throw new TypeError('callback must be a function or array of functions')
+  }
+
+  // if an array of callbacks is passed, make sure to shallow-clone the array
+  // just so when we unshift through it we don't mutate the original.
+  const callbacks = Array.isArray(callback) ? callback.slice(0) : [callback]
+
+  if (callbacks.length === 0) {
+    throw new TypeError('callback can\'t be an empty array')
   }
 
   const { req, res } = createMocks(options, { eventEmitter: EventEmitter })
@@ -24,13 +32,20 @@ const expressRequestMock = (callback, options = {}, decorators = {}) => {
       if (err && !isBypass) {
         reject(err)
       } else {
-        done()
-      }
+        // pop callbacks from the array, reducing the size of the array.
+        const nextCb = callbacks.shift()
+
+        if (nextCb) {
+          nextCb(req, res, next)
+        } else {
+          done()
+        }
+      } 
     }
 
     res.on('end', done)
 
-    callback(req, res, next)
+    next()
   })
 }
 

@@ -2,7 +2,7 @@ import { Request, Response, RequestHandler } from 'express'
 import { MockResponse, RequestOptions } from 'node-mocks-http'
 
 declare function expressRequestMock(
-  callback: RequestHandler,
+  callback: RequestHandler | Array<RequestHandler>,
   options?: RequestOptions,
   decorators?: Record<string, unknown>
 ): Promise<{
