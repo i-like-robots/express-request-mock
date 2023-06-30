@@ -1,14 +1,8 @@
 module.exports = {
   root: true,
   env: {
-    es6: true,
+    es2018: true,
     node: true,
   },
-  extends: [],
-  overrides: [
-    {
-      files: ['lib/*.js', 'test/**/*.js'],
-      extends: ['eslint:recommended'],
-    },
-  ],
+  extends: ['eslint:recommended'],
 }
