@@ -13,9 +13,9 @@
   "types": "index.d.ts",
   "scripts": {
     "test": "npm run verify && npm run spec",
-    "spec": "tap test/spec.js",
+    "spec": "node --test --test-reporter spec spec.js",
     "lint": "eslint .",
-    "format": "prettier --write '**/*.{ts,tsx,js,jsx,json,yml}'",
+    "format": "prettier --write '**/*.{js,json,yml}'",
     "verify": "npm run lint && npm run format",
     "prepublishOnly": "npm run test"
   },
