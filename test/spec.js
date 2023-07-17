@@ -1,6 +1,6 @@
 const { describe, it, mock } = require('node:test')
 const assert = require('node:assert')
-const subject = require('./')
+const subject = require('../')
 
 const isRequest = (obj) => {
   const props = ['method', 'url', 'path', 'query']
