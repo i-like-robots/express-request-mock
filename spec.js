@@ -1,106 +1,137 @@
-const { describe } = require('node:test')
+const { describe, it, mock } = require('node:test')
 const assert = require('node:assert')
-const sinon = require('sinon')
 const subject = require('./')
+
+const isRequest = (obj) => {
+  const props = ['method', 'url', 'path', 'query']
+  return props.every((prop) => Object.prototype.hasOwnProperty.call(obj, prop))
+}
+
+const isResponse = (obj) => {
+  const props = ['statusCode', 'statusMessage', 'send', 'end']
+  return props.every((prop) => Object.prototype.hasOwnProperty.call(obj, prop))
+}
 
 describe('Express Request Mock', () => {
   describe('when called with a method', () => {
-    const stub = sinon.stub()
+    it('calls the method once', () => {
+      const stub = mock.fn()
 
-    subject(stub)
+      subject(stub)
 
-    assert.ok(stub.calledOnce, 'it calls the method')
-    assert.ok(
-      stub.calledWithMatch(sinon.match.object, sinon.match.object, sinon.match.func),
-      'with the request, response and fallthrough function'
-    )
-  })
+      assert.equal(stub.mock.calls.length, 1)
+    })
 
-  describe('when called without a method', () => {
-    assert.throws(subject, TypeError, 'it throws a type error')
-  })
+    it('calls the method with the request, response and fallthrough function', () => {
+      const stub = mock.fn()
 
-  describe('when given options', () => {
-    const stub = sinon.stub()
-    const query = { search: true }
+      subject(stub)
 
-    subject(stub, { query })
+      const [req, res, next] = stub.mock.calls[0].arguments
 
-    assert.ok(
-      stub.calledWithMatch(sinon.match.has('query', query), sinon.match.object, sinon.match.func),
-      'the mocks are created using the options'
-    )
-  })
-
-  describe('when given decorators', () => {
-    const stub = sinon.stub()
-    const locals = { authorized: true }
-
-    subject(stub, undefined, { locals })
-
-    assert.ok(
-      stub.calledWithMatch(
-        sinon.match.has('locals', locals),
-        sinon.match.has('locals', locals),
-        sinon.match.func
-      ),
-      'the mocks are assigned the decorators'
-    )
-  })
-})
-
-describe('when the promise is resolved', () => {
-  describe('by the end event being emitted (sync)', async () => {
-    const fixture = (_req, res) => res.send('OK!')
-    const { req, res } = await subject(fixture)
-
-    assert.ok(req, 'it provides the request object')
-    assert.ok(res, 'it provides the response object')
-  })
-
-  describe('by the end event being emitted (async)', async () => {
-    const fixture = (_req, res) => process.nextTick(() => res.send('OK!'))
-    const { req, res } = await subject(fixture)
-
-    assert.ok(req, 'it provides the request object')
-    assert.ok(res, 'it provides response object')
-  })
-
-  describe('by the fallthrough function being called', async () => {
-    const fixture = (_req, _res, next) => next()
-    const { req, res } = await subject(fixture)
-
-    assert.ok(req, 'it provides the request object')
-    assert.ok(res, 'it provides response object')
-  })
-
-  describe('by the fallthrough function being called with a bypass command', async () => {
-    const fixture = (_req, _res, next) => next('route')
-    const { req, res } = await subject(fixture)
-
-    assert.ok(req, 'it provides the request object')
-    assert.ok(res, 'it provides response object')
-  })
-})
-
-describe('when the promise is rejected', () => {
-  describe('by the fallthrough function being called with an error', async () => {
-    const fixture = (_req, _res, next) => next(new Error('oh no!'))
-
-    await assert.rejects(() => subject(fixture), {
-      name: 'Error',
-      message: 'oh no!',
+      assert.ok(isRequest(req))
+      assert.ok(isResponse(res))
+      assert.ok(next instanceof Function)
     })
   })
 
-  describe('by the code under test throwing an error', async () => {
-    const fixture = () => {
-      throw new Error('oh no!')
-    }
+  describe('when called without a method', () => {
+    it('throws a type error', () => {
+      assert.throws(subject, TypeError)
+    })
+  })
 
-    await assert.rejects(() => subject(fixture), {
-      name: 'Error',
-      message: 'oh no!',
+  describe('when given options', () => {
+    it('creates mocks using the options', () => {
+      const stub = mock.fn()
+      const query = { search: true }
+
+      subject(stub, { query })
+
+      const [request] = stub.mock.calls[0].arguments
+
+      assert.deepStrictEqual(request.query, query)
+    })
+  })
+
+  describe('when given decorators', () => {
+    it('assigns the decorators to the mocks', () => {
+      const stub = mock.fn()
+      const locals = { authorized: true }
+
+      subject(stub, undefined, { locals })
+
+      const [request] = stub.mock.calls[0].arguments
+
+      assert.deepStrictEqual(request.locals, locals)
+    })
+  })
+
+  describe('when the promise is resolved', () => {
+    describe('by the end event being emitted (sync)', () => {
+      it('returns the request and response objects', async () => {
+        const fixture = (_, res) => res.send('OK!')
+        const { req, res } = await subject(fixture)
+
+        assert.ok(isRequest(req))
+        assert.ok(isResponse(res))
+      })
+    })
+
+    describe('by the end event being emitted (async)', () => {
+      it('returns the request and response objects', async () => {
+        const fixture = (_, res) => process.nextTick(() => res.send('OK!'))
+        const { req, res } = await subject(fixture)
+
+        assert.ok(isRequest(req))
+        assert.ok(isResponse(res))
+      })
+    })
+
+    describe('by the fallthrough function being called', () => {
+      it('returns the request and response objects', async () => {
+        const fixture = (_req, _res, next) => next()
+        const { req, res } = await subject(fixture)
+
+        assert.ok(isRequest(req))
+        assert.ok(isResponse(res))
+      })
+    })
+
+    describe('by the fallthrough function being called with a bypass command', async () => {
+      it('returns the request and response objects', async () => {
+        const fixture = (_req, _res, next) => next('route')
+        const { req, res } = await subject(fixture)
+
+        assert.ok(isRequest(req))
+        assert.ok(isResponse(res))
+      })
+    })
+  })
+
+  describe('when the promise is rejected', () => {
+    describe('by the fallthrough function being called with an error', () => {
+      it('rejects with the error', async () => {
+        const fixture = (_req, _res, next) => next(new Error('oh no!'))
+
+        await assert.rejects(() => subject(fixture), {
+          name: 'Error',
+          message: 'oh no!',
+        })
+      })
+    })
+
+    describe('by the code under test throwing an error', () => {
+      it('rejects with the error', async () => {
+        const fixture = () => {
+          throw new Error('oh no!')
+        }
+
+        await assert.rejects(() => subject(fixture), {
+          name: 'Error',
+          message: 'oh no!',
+        })
+      })
     })
   })
 })
