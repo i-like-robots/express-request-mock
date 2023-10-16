@@ -1,4 +1,4 @@
-# Express Request Mock
+# express-request-mock
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/i-like-robots/express-request-mock/blob/main/LICENSE)
 ![build status](https://github.com/i-like-robots/express-request-mock/actions/workflows/test.yml/badge.svg?branch=main) [![npm version](https://img.shields.io/npm/v/express-request-mock.svg?style=flat)](https://www.npmjs.com/package/express-request-mock)
