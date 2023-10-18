@@ -19,7 +19,7 @@ it('returns a 200 response', async () => {
 
 ## Installation
 
-This is a [Node.js][node] module available through the [npm][npm] registry. Node.js 12 or higher is required.
+This is a [Node.js][node] module available through the [npm][npm] registry. Node.js 18 or higher is required.
 
 ```sh
 $ npm install --save-dev express-request-mock

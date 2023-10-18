@@ -1,8 +1,14 @@
 # Changelog
 
+## v4.0.0
+
+- Updates minimum Node version to v18.0.0
+- Updates the `node-mocks-http` package to v1.13.0
+
 ## v3.1.0
 
 - Adds TypeScript type definitions
+
 ## v3.0.0
 
 - Updates minimum Node version to v12.0.0
