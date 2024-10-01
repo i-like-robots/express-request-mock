@@ -1,12 +1,13 @@
 {
   "name": "express-request-mock",
   "version": "4.0.0",
-  "description": "A convenient wrapper for node-mocks-http which makes testing Express controllers and middleware easy.",
+  "description": "A convenient wrapper for node-mocks-http which makes testing Express or Koa controllers and middleware easy.",
   "keywords": [
     "mock",
     "stub",
     "test",
-    "express"
+    "express",
+    "koa"
   ],
   "main": "index.js",
   "types": "index.d.ts",
@@ -26,11 +27,11 @@
   "homepage": "https://github.com/i-like-robots/express-request-mock",
   "license": "MIT",
   "dependencies": {
-    "node-mocks-http": "^1.13.0"
+    "node-mocks-http": "^1.16.0"
   },
   "devDependencies": {
-    "eslint": "^8.51.0",
-    "prettier": "^3.0.0"
+    "eslint": "^9.11.0",
+    "prettier": "^3.3.0"
   },
   "engines": {
     "node": ">= 18.0.0"
