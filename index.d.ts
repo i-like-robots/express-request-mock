@@ -1,9 +1,10 @@
-import { Request, Response, RequestHandler } from 'express'
-import { MockResponse, RequestOptions } from 'node-mocks-http'
+import type { Request, Response, RequestHandler } from 'express'
+import type { MockResponse, RequestOptions, ResponseOptions } from 'node-mocks-http'
 
 declare function expressRequestMock(
   callback: RequestHandler,
-  options?: RequestOptions,
+  requestOptions?: RequestOptions,
+  responseOptions?: ResponseOptions,
   decorators?: Record<string, unknown>
 ): Promise<{
   req: Request

@@ -15,14 +15,14 @@ it('returns a 200 response', async () => {
 })
 ```
 
-[1]: https://github.com/howardabrams/node-mocks-http
+[1]: https://github.com/eugef/node-mocks-http
 
 ## Installation
 
-This is a [Node.js][node] module available through the [npm][npm] registry. Node.js 18 or higher is required.
+This is a [Node.js][node] module available through the [npm][npm] registry. Node.js 24 or higher is required.
 
 ```sh
-$ npm install --save-dev express-request-mock
+$ npm install -D express-request-mock
 ```
 
 [node]: https://nodejs.org/en/
@@ -34,9 +34,11 @@ This package provides one function which accepts three arguments:
 
 1. The route handler to test (a function which accepts a request, response, and optional fallthrough function.)
 2. An options object for `createRequest` (the options are [documented here][2].)
+2. An options object for `createResponse` (the options are [documented here][3].)
 3. An object containing extra properties to decorate to the request and response objects.
 
-[2]: https://github.com/howardabrams/node-mocks-http#createrequest
+[2]: https://github.com/eugef/node-mocks-http#createrequest
+[3]: https://github.com/eugef/node-mocks-http#createresponse
 
 The function returns a promise which will resolve when the response is ended or the fallthrough function (`next()`) is called. The promise will reject if the underlying code throws an error or the fallthrough function is called with an error.
 
