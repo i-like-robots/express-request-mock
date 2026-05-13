@@ -89,6 +89,29 @@ describe('Controllers - Animals', () => {
 })
 ```
 
+### TypeScript
+
+This package can be used within TypeScript codebases and supports generic arguments for your request and response object type definitions.
+
+```ts
+import requestMock from 'express-request-mock'
+import type { Request, Response } from 'express'
+import handler from '../routes/animals'
+
+type MyRequest = Request<{ pageId: string }>
+
+type MyResponse = Response<undefined, { auth: boolean }>
+
+const { request, response } = await requestMock<MyRequest, MyResponse>(
+  handler,
+  { query: { species: 'dog' } },
+  { locals: { requestId: 123 } },
+)
+
+request.query.species // string
+response.locals.requestId // number
+```
+
 ## License
 
 express-request-mock is MIT licensed.
