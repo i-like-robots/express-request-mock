@@ -41,8 +41,8 @@ describe('Express Request Mock', () => {
     })
   })
 
-  describe('when given options', () => {
-    it('creates mocks using the options', () => {
+  describe('when given request options', () => {
+    it('creates request object mocks using the options', () => {
       const stub = mock.fn()
       const query = { search: true }
 
@@ -54,16 +54,30 @@ describe('Express Request Mock', () => {
     })
   })
 
-  describe('when given decorators', () => {
-    it('assigns the decorators to the mocks', () => {
+  describe('when given response options', () => {
+    it('creates response object mocks using the options', () => {
       const stub = mock.fn()
-      const locals = { authorized: true }
+      const locals = { userId: 123 }
 
       subject(stub, undefined, { locals })
 
-      const [request] = stub.mock.calls[0].arguments
+      const [, response] = stub.mock.calls[0].arguments
 
-      assert.deepStrictEqual(request.locals, locals)
+      assert.deepStrictEqual(response.locals, locals)
+    })
+  })
+
+  describe('when given decorators', () => {
+    it('assigns the decorators to the request and response mocks', () => {
+      const stub = mock.fn()
+      const decorator = { authorized: true }
+
+      subject(stub, undefined, undefined, decorator)
+
+      const [request, response] = stub.mock.calls[0].arguments
+
+      assert.equal(request.authorized, true)
+      assert.equal(response.authorized, true)
     })
   })
 
