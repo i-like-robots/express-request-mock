@@ -1,5 +1,12 @@
 # Changelog
 
+## v5.0.0
+
+- Updates minimum Node version to v24.0.0
+- Updates the `node-mocks-http` package to v1.17.2
+- Adds support for providing response options
+- Adds support for generic arguments to TypeScript type definition
+
 ## v4.0.0
 
 - Updates minimum Node version to v18.0.0
